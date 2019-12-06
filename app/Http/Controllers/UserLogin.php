@@ -29,5 +29,23 @@ class UserLogin extends Controller
     public function addurl(){
         $cli = new Client();
         $response=$cli->request('get','https://www.jd.com/?cu=true&utm_source=buy.jiegeng.com&utm_medium=tuiguang&utm_campaign=t_1000159524_&utm_term=f6e348e503d6420e85200fb383cfb4ec');
+
+    }
+    public function wx(){
+        $token = '737051678ysd72bs7d2';
+        $signature = $_GET["signature"];
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];
+        $ec=$_GET['echostr'];
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+        
+        if( $tmpStr == $signature ){
+            echo $ec;
+        }else{
+           die('not ok');
+        }
     }
 }

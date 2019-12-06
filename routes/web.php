@@ -22,6 +22,7 @@ Route::get('text/hello','Test\Admin@Hello');
 Route::get('userlogin','UserLogin@addUser');
 Route::get('redisq','UserLogin@redisq');
 Route::get('addurl','UserLogin@addurl');
+Route::get('wx','UserLogin@wx');
 
 
 

@@ -45,8 +45,10 @@ class UserLogin extends Controller
          //获取用户的openid
          $open_id=$xml_obj->FromUserName;
         if($event=='subscribe'){
+           
+           
             //获取用户信息
-            $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$this->access_token."&openid=".$open_id."=zh_CN";
+            $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$open_id.'&lang=zh_CN';
             $user_info=file_get_contents($url);
             file_put_contents('wx_user.log',$user_info,FILE_APPEND);
 
@@ -58,7 +60,7 @@ class UserLogin extends Controller
       //获取用户的基本信息
       public function getUserInfo($access_token,$open_id){
 
-        $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$open_id.'=zh_CN';
+        $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$open_id.'&lang=zh_CN';
         //发送网络请求   发送的get的请求
         $json_str=file_get_contents($url);
         $log_file='wx_user.log';

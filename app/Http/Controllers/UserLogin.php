@@ -35,8 +35,8 @@ class UserLogin extends Controller
         //将接收的数据记录到日志文件
         $log_file ="wx.log";
         $data=file_get_contents("php://input");
-        $data=date('Y-m-d H:i:s',time()).$data;
-        file_put_contents($log_file,$data,FILE_APPEND);
+        $da=date('Y-m-d H:i:s',time()).$data;
+        file_put_contents($log_file,$da,FILE_APPEND);
 
         //处理xml数据
         $data_obj =simplexml_load_string($data);

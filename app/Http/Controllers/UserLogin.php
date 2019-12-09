@@ -31,19 +31,19 @@ class UserLogin extends Controller
 
       //接收微信推送事件
       public function wxer(){
-
+          
         //将接收的数据记录到日志文件
         $log_file ="wx.log";
-        $data=file_get_contents("php://input");
-        $da=date('Y-m-d H:i:s',time()).$data;
+        $xml_str=file_get_contents("php://input");
+        $da=date('Y-m-d H:i:s',time()).$xml_str;
         file_put_contents($log_file,$da,FILE_APPEND);
 
         //处理xml数据
-        $data_obj =simplexml_load_string($data);
-        $event =$data_obj->Event;
+        $xml_obj =simplexml_load_string($xml_str);
+        $event =$xml_obj->Event;
         if($event=='subscribe'){
             //获取用户的openid
-            $open_id=$data_obj->FromUserName;
+            $open_id=$xml_obj->FromUserName;
             //获取用户信息
             $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$open_id.'=zh_CN';
             $user_info=file_get_contents($url);

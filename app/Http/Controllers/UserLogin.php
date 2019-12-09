@@ -46,7 +46,7 @@ class UserLogin extends Controller
          $open_id=$xml_obj->FromUserName;
         if($event=='subscribe'){
             //获取用户信息
-            $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$this->access_token."&openid='.$open_id.'=zh_CN";
+            $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$this->access_token."&openid=".$open_id."=zh_CN";
             $user_info=file_get_contents($url);
             file_put_contents('wx_user.log',$user_info,FILE_APPEND);
 

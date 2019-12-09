@@ -10,7 +10,7 @@ class UserLogin extends Controller
 {
 
       //接收微信推送事件
-      public function wxre(){
+      public function wxer(){
 
         //将接收的数据记录到日志文件
         $log_file ="wx.log";

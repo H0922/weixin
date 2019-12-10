@@ -12,14 +12,15 @@ use function GuzzleHttp\json_decode;
 class UserLogin extends Controller
 {
 
+    //access_tokrn数据
         protected $access_token;
 
         public function __construct()
         {
-            //获取 access_token
+            //调用access_token
             $this->access_token=$this->getAccessToken();
         }
-        //
+        //获取封装access_token数据
         public function getAccessToken(){
           $url='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET').'';
             $data_json=file_get_contents($url);
@@ -30,6 +31,7 @@ class UserLogin extends Controller
 
 
       //接收微信推送事件
+      //获取用户关注
       public function wxer(){
 
         //将接收的数据记录到日志文件
@@ -45,15 +47,28 @@ class UserLogin extends Controller
          //获取用户的openid
          $open_id=$xml_obj->FromUserName;
         if($event=='subscribe'){
-           
-           
             //获取用户信息
-            $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$open_id.'&lang=zh_CN';
+            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$open_id.'&lang=zh_CN';
             $user_info=file_get_contents($url);
             file_put_contents('wx_user.log',$user_info,FILE_APPEND);
-
         }
 
+        //用户消息回复纯文本回复
+            $msy=$xml_obj->MsgType;
+            $to=$xml_obj->ToUserName;
+            $name=$xml_obj->FromUserName;
+            $time=time();
+            if($msy=='text'){
+                $con=date('Y-m-d H:i:s',time()).$xml_obj->Content;
+            $nei= '<xml>
+                    <ToUserName><![CDATA['.$to.']]></ToUserName>
+                    <FromUserName><![CDATA['.$name.']></FromUserName>
+                    <CreateTime>'.$time.'</CreateTime>
+                    <MsgType><![CDATA[text]]></MsgType>
+                    <Content><![CDATA['.$con.']]></Content>
+                    </xml>';
+            echo $nei;  
+            }
 
     }
 
@@ -67,29 +82,6 @@ class UserLogin extends Controller
         file_put_contents($log_file,$json_str,FILE_APPEND);
 
     }
-    public function addUser(){
-        $pwd='123456';
-        $pwds= password_hash($pwd,PASSWORD_BCRYPT);
-        $data=[
-            'user_name' => '李四',
-            'password' =>$pwds,
-            'email' => '737051678@qq.com'
-        ];
-        Mu::insert($data);
-        dd(12345);
-    }
-    public function redisq(){
-        $k='huangxiaobo';
-        $v='nihaoma';
-        Redis::set($k,$v);
-        dump(Redis::get($k));
-        dump(date('Y-m-d H:i:s'));
-    }
-    // public function addurl(){
-    //     $cli = new Client();
-    //     $response=$cli->request('get','https://www.jd.com/?cu=true&utm_source=buy.jiegeng.com&utm_medium=tuiguang&utm_campaign=t_1000159524_&utm_term=f6e348e503d6420e85200fb383cfb4ec');
-
-    // }
     public function wx(){
         $token = '737051678ysd72bs7d2';
         $signature = $_GET["signature"];

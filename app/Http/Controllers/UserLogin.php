@@ -68,7 +68,7 @@ class UserLogin extends Controller
                     <Content><![CDATA['.$con.']]></Content>
                     </xml>';
             echo $nei;  
-            
+
             }
 
     }
